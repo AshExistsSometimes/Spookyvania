@@ -9,6 +9,9 @@ public class LadderMovement : MonoBehaviour
     [Header("Stats")]
     public float ClimbSpeed = 6f;
 
+    [Header("References")]
+    public PlayerMovement playerMovement;
+
     // Private Fields ///////////////////////////////////////////////
 
     private bool isClimbing;
