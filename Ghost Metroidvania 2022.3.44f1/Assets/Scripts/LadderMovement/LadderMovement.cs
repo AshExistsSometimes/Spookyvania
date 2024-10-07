@@ -36,6 +36,10 @@ public class LadderMovement : MonoBehaviour
         {
             isClimbing = true;
         }
+        else
+        {
+            isClimbing = false;
+        }
     }
 
     private void FixedUpdate()
@@ -45,7 +49,7 @@ public class LadderMovement : MonoBehaviour
             rb.gravityScale = 0f;
             rb.velocity = new Vector2(rb.velocity.x, vertical * ClimbSpeed);
         }
-        else if (!isClimbing && isTouchingLadder)
+        else if (!isClimbing && isTouchingLadder && isClimbingLadder)
         {
             rb.gravityScale = 0f;
             rb.velocity = new Vector2(rb.velocity.x, 0f);
@@ -70,6 +74,7 @@ public class LadderMovement : MonoBehaviour
         {
             isTouchingLadder = false;
             isClimbing = false;
+            isClimbingLadder = false;
         }
     }
 }
