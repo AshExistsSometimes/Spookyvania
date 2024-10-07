@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
     private Vector3 GetClosestPointWithBounds(Vector3 position)
     {
         // Local
-        Vector3 returnedValue = Vector3.zero;
+        Vector3 returnedValue = position;
 
         if (position.x - (CameraSize.x / 2f) < TopLeft.x)// Exceeds Left bounds (x)
         {
