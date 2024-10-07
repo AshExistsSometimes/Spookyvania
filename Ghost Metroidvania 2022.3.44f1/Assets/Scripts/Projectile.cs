@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using UnityEditor.AssetImporters;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -23,6 +24,7 @@ public class Projectile : MonoBehaviour
     public bool plateReturned = false;
 
     private Rigidbody2D rb;
+    private BoxCollider2D collider;
 
     private bool returnToPlayer = false;
 
@@ -37,6 +39,7 @@ public class Projectile : MonoBehaviour
     {
         ProjectileCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
     }
     private void Start()
     {
@@ -71,21 +74,13 @@ public class Projectile : MonoBehaviour
         }
 
         // Speed and Movement
-        // float movementSpeed = ProjectileSpeed * Time.deltaTime * direction;
         rb.velocity = (((Vector2)(__direction * ProjectileSpeed)));
 
-        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
-        {
+        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)// Returning to Player
+        {          
             ReturnToPlayer();
         }
     }
-
-    //#region OnTriggerEnter
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    ReturnToPlayer();
-    //}
-    //#endregion
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -95,6 +90,8 @@ public class Projectile : MonoBehaviour
 
     public void InitProjectile(float _direction)// begin throw
     {
+        collider.enabled = true;
+
         gameObject.SetActive(true);
 
         plateReturned = false;
@@ -128,6 +125,7 @@ public class Projectile : MonoBehaviour
     private void ReturnToPlayer()
     {
         returnToPlayer = true;
+        collider.enabled = false;
         __direction = (targetPoint - transform.position).normalized;
     }
 

@@ -63,25 +63,25 @@ public class CameraController : MonoBehaviour
 
         if (position.x - (CameraSize.x / 2f) < TopLeft.x)// Exceeds Left bounds (x)
         {
-            returnedValue.x = TopLeft.x + (CameraSize.x / 2f);// = new Vector3(TopLeft.x + (CameraSize.x / 2f), position.y, position.z);
+            returnedValue.x = TopLeft.x + (CameraSize.x / 2f);
         }
         //
 
         if (position.x + (CameraSize.x / 2) > BottomRight.x)// Exceeds Right bounds (x)
         {
-            returnedValue.x = BottomRight.x - (CameraSize.x / 2f);//= new Vector3(BottomRight.x - (CameraSize.x / 2f), position.y, position.z);
+            returnedValue.x = BottomRight.x - (CameraSize.x / 2f);
         }
         //
 
         if (position.y + CameraSize.y / 2 > TopLeft.y)// Exceeds Top bounds (y)
         {
-            returnedValue.y = TopLeft.y - (CameraSize.y / 2f); //new Vector3(position.x, TopLeft.y - (CameraSize.y / 2f), position.z);
+            returnedValue.y = TopLeft.y - (CameraSize.y / 2f); 
         }
         //
 
         if (position.y - CameraSize.y / 2 < BottomRight.y)// Exceeds Bottom bounds (y)
         {
-            returnedValue.y = BottomRight.y + (CameraSize.y / 2f); // = new Vector3(position.x, BottomRight.y + (CameraSize.y / 2f), position.z);
+            returnedValue.y = BottomRight.y + (CameraSize.y / 2f);
         }
         //
         returnedValue.z = position.z;
