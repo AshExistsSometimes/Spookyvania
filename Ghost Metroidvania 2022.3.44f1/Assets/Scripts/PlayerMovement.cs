@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private Rigidbody2D rb;
     private bool resetVertVelocity = false;
+    private CameraController camController;
 
     private float flightTime;
 
@@ -49,19 +50,20 @@ public class PlayerMovement : MonoBehaviour
         //Grab references for rigidbody and animator from player
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        camController = Camera.main.transform.GetComponent<CameraController>();
     }
 
     private void Update()
     {
-        if (Camera.main.transform.GetComponent<CameraController>().CameraMoving)// Pauses player when camera moves
-        {
-            rb.simulated = false;
-            return;
-        }
-        else
-        {
-            rb.simulated = true;
-        }
+        //if (camController.CameraMoving)// Pauses player when camera moves
+        //{
+        //    rb.simulated = false;
+        //    return;
+        //}
+        //else
+        //{
+        //    rb.simulated = true;
+        //}
 
         horizontalInput = Input.GetAxis("Horizontal"); // Get Horizontal Input
 

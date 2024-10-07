@@ -50,6 +50,7 @@ public class CameraController : MonoBehaviour
         transform.position = GetClosestPointWithBounds(coords);
     }
 
+
     private Vector3 PlayerCoords(float zAxis)
     {
         return new Vector3(Player.position.x + CamOffset.x, Player.position.y + CamOffset.y, zAxis);
@@ -60,38 +61,46 @@ public class CameraController : MonoBehaviour
         // Local
         Vector3 returnedValue = Vector3.zero;
 
-        if (position.x - CameraSize.x / 2f < TopLeft.x)// Exceeds Left bounds (x)
+        if (position.x - (CameraSize.x / 2f) < TopLeft.x)// Exceeds Left bounds (x)
         {
-            returnedValue = new Vector3(TopLeft.x + (CameraSize.x / 2f), position.y, position.z);
+            returnedValue.x = TopLeft.x + (CameraSize.x / 2f);// = new Vector3(TopLeft.x + (CameraSize.x / 2f), position.y, position.z);
         }
         //
 
-        if (position.x + CameraSize.x / 2 > BottomRight.x)// Exceeds Right bounds (x)
+        if (position.x + (CameraSize.x / 2) > BottomRight.x)// Exceeds Right bounds (x)
         {
-            returnedValue = new Vector3(BottomRight.x - (CameraSize.x / 2f), position.y, position.z);
+            returnedValue.x = BottomRight.x - (CameraSize.x / 2f);//= new Vector3(BottomRight.x - (CameraSize.x / 2f), position.y, position.z);
         }
         //
 
         if (position.y + CameraSize.y / 2 > TopLeft.y)// Exceeds Top bounds (y)
         {
-            returnedValue = new Vector3(position.x, TopLeft.y - (CameraSize.y / 2f), position.z);
+            returnedValue.y = TopLeft.y - (CameraSize.y / 2f); //new Vector3(position.x, TopLeft.y - (CameraSize.y / 2f), position.z);
         }
         //
 
         if (position.y - CameraSize.y / 2 < BottomRight.y)// Exceeds Bottom bounds (y)
         {
-            returnedValue = new Vector3(position.x, BottomRight.y + (CameraSize.y / 2f), position.z);
+            returnedValue.y = BottomRight.y + (CameraSize.y / 2f); // = new Vector3(position.x, BottomRight.y + (CameraSize.y / 2f), position.z);
         }
         //
+        returnedValue.z = position.z;
 
         return returnedValue;
     }
 
-    public void MoveToNewRoom(Vector3 roomPosition, Vector2 roomSize)
+    public void MoveToNewRoom(Transform roomTransform, Vector2 roomSize)
     {
-        CameraMoving = true;
+        if (CameraMoving)
+        {
+            return;
+        }
+            
+            CameraMoving = true;
 
-        FindRoomBounds(roomPosition, roomSize);
+        CurrentRoom = roomTransform;
+
+        FindRoomBounds(roomTransform.position, roomSize);
         FindCameraBounds();
 
         Vector3 targetPoint = PlayerCoords(transform.position.z);
@@ -101,7 +110,7 @@ public class CameraController : MonoBehaviour
         // Smoothly move camera over set time
         StartCoroutine(MoveCameraToNewLocationSmoothly(transform.position, targetPoint));
 
-        transform.position = new Vector3(roomPosition.x, roomPosition.y, transform.position.z);
+        //transform.position = new Vector3(roomPosition.x, roomPosition.y, transform.position.z);
     }
 
     private void FindRoomBounds(Vector3 position, Vector2 size)
@@ -121,11 +130,13 @@ public class CameraController : MonoBehaviour
     {
         float time = 0f;
 
+        Vector3 startPos = startLocation;
+
         CameraMoving = true;
 
         while (transform.position != endLocation)
         {
-            transform.position = Vector3.Lerp(startLocation, endLocation, time);
+            transform.position = Vector3.Lerp(startPos, endLocation, time);
 
             time += Time.deltaTime * speed;
 
