@@ -15,7 +15,7 @@ public class MovingPlatformParenting : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.transform.tag == "Player") ;
+        if (other.transform.tag == "Player");
         {
             other.transform.parent = null;
             other.attachedRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;

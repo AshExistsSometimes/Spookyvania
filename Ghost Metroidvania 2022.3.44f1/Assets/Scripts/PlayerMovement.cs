@@ -55,16 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        //if (camController.CameraMoving)// Pauses player when camera moves
-        //{
-        //    rb.simulated = false;
-        //    return;
-        //}
-        //else
-        //{
-        //    rb.simulated = true;
-        //}
-
         horizontalInput = Input.GetAxis("Horizontal"); // Get Horizontal Input
 
         // Left / Right Flipping when moving
@@ -93,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && FlightEnabled && !resetVertVelocity)
         {
-            rb.velocity = new Vector2(rb.velocity.x, FlightForce);
+            rb.velocity = new Vector2(rb.velocity.x, FlightForce * Time.deltaTime);
             resetVertVelocity = true;
         }
         
@@ -102,24 +92,28 @@ public class PlayerMovement : MonoBehaviour
             flightTime -= Time.deltaTime;
         }
 
+
+
         if (isGrounded())
         {
             flightTime = FlightDuration;
         }
 
+
+
         // Flight Controls
         if (Input.GetKey(KeyCode.Space) && flightTime > 0 && FlightEnabled)
         {
-            rb.AddForce((((Vector2)transform.up * FlightForce) - rb.velocity) * CounterRate, ForceMode2D.Force); // Flight
+            rb.velocity = new Vector2(rb.velocity.x, ((((Vector2)transform.up * FlightForce)) * CounterRate).y); // Flight
         }
         if (Input.GetKey(KeyCode.Space) && FlightEnabled && flightTime <= 0)
         {
             if(rb.velocity.y < 0)
             {
-                rb.AddForce(transform.up * (Mathf.Abs(rb.velocity.y) * GlideRate) ); // Glide
-            }
-           
+                rb.velocity = new Vector2(rb.velocity.x, GlideRate); // Glide //  (transform.up * (Mathf.Abs(rb.velocity.y) * GlideRate)).y
+            }        
         }
+
 
         FlightMeter.fillAmount = (flightTime / FlightDuration);
 
